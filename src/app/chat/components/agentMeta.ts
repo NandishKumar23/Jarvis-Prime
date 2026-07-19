@@ -1,8 +1,8 @@
 import type { Agent } from '@/lib/types'
 
-export type AgentColor = 'blue' | 'green' | 'orange' | 'red' | 'purple'
+type AgentColor = 'blue' | 'green' | 'orange' | 'red' | 'purple'
 
-export interface AgentColorClasses {
+interface AgentColorClasses {
   /** Badge / pill container classes. */
   badge: string
   /** Active/highlighted badge classes. */
@@ -27,7 +27,7 @@ interface AgentMetaEntry {
  * IMPORTANT: Tailwind v4 only generates classes it can see as complete strings,
  * so every class below is written out in full (no runtime interpolation).
  */
-export const AGENT_META: Record<Agent, AgentMetaEntry> = {
+const AGENT_META: Record<Agent, AgentMetaEntry> = {
   knowledge: {
     label: 'Knowledge',
     color: 'blue',

@@ -1,16 +1,10 @@
 // Agent type definitions
-export const AGENTS = ['knowledge', 'finance', 'fitness', 'health', 'comms'] as const
+const AGENTS = ['knowledge', 'finance', 'fitness', 'health', 'comms'] as const
 export type Agent = (typeof AGENTS)[number]
 
 export interface OrchestratorResponse {
   agents: Agent[]
   tasks: Record<Agent, string>
-}
-
-export interface AgentResponse {
-  agent: Agent
-  response: string
-  metadata?: Record<string, unknown>
 }
 
 export interface ChatMessage {
@@ -42,7 +36,7 @@ export type StreamEvent =
 // UI state models
 // ---------------------------------------------------------------------------
 
-export type SectionStatus = 'pending' | 'streaming' | 'done' | 'error'
+type SectionStatus = 'pending' | 'streaming' | 'done' | 'error'
 
 /** One agent's contribution to an assistant message (streams independently). */
 export interface AgentSection {
@@ -86,7 +80,7 @@ export type SendDriver = (
 // Component prop types (centralized)
 // ---------------------------------------------------------------------------
 
-export type BadgeSize = 'sm' | 'md'
+type BadgeSize = 'sm' | 'md'
 
 export interface AgentBadgeProps {
   agent: Agent
