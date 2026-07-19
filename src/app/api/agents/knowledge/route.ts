@@ -1,5 +1,8 @@
 import { type NextRequest, NextResponse } from 'next/server'
-import { KnowledgeAgent } from '@/lib/agents/knowledge'
+import { KnowledgeAgent } from '@/lib/adk/agents/knowledge'
+
+// The ADK agent relies on Node APIs, so this route must run on the Node.js runtime.
+export const runtime = 'nodejs'
 
 export async function POST(request: NextRequest) {
   try {
@@ -10,15 +13,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Task is required' }, { status: 400 })
     }
 
-    const response = await KnowledgeAgent.execute(task)
+    let response = ''
+    for await (const token of KnowledgeAgent.streamAgent(task)) {
+      response += token
+    }
 
     return NextResponse.json({
       agent: 'knowledge',
-      response,
+      response: response || 'No response generated',
       timestamp: new Date().toISOString(),
     })
-  } catch (error) {
-    console.error('Knowledge agent error:', error)
+  } catch {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

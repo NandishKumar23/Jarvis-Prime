@@ -7,16 +7,13 @@ export const env = createEnv({
    * This way you can ensure the app isn't built with invalid env vars.
    */
   server: {
-    GROQ_API_KEY: z.string().min(1).startsWith('gsk_', {
-      message: 'GROQ_API_KEY must start with "gsk_"',
-    }),
-
     // NextAuth
     GITHUB_ID: z.string().min(1),
     GITHUB_SECRET: z.string().min(1),
     GOOGLE_CLIENT_ID: z.string().min(1),
     GOOGLE_CLIENT_SECRET: z.string().min(1),
     NEXTAUTH_SECRET: z.string().min(1),
+    GEMINI_API_KEY: z.string().min(1),
 
     // Optional: Add when implementing
     // OPENAI_API_KEY: z.string().min(1).optional(),
@@ -30,7 +27,7 @@ export const env = createEnv({
    * For them to be exposed to the client, prefix them with `NEXT_PUBLIC_`.
    */
   client: {
-    NEXT_PUBLIC_APP_URL: z.string().min(1).default('http://localhost:3001'),
+    NEXT_PUBLIC_APP_URL: z.string().min(1).default('http://localhost:3000'),
   },
 
   /**
@@ -39,12 +36,12 @@ export const env = createEnv({
    */
   runtimeEnv: {
     // Server
-    GROQ_API_KEY: process.env.GROQ_API_KEY,
     GITHUB_ID: process.env.GITHUB_ID,
     GITHUB_SECRET: process.env.GITHUB_SECRET,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
+    GEMINI_API_KEY: process.env.GEMINI_API_KEY,
     NODE_ENV: process.env.NODE_ENV,
 
     // Client

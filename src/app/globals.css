@@ -17,3 +17,247 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* ------------------------------------------------------------------ */
+/* Voice orb animations (Siri / Gemini style)                          */
+/* ------------------------------------------------------------------ */
+
+@keyframes orb-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes orb-spin-reverse {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes orb-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+@keyframes orb-speak {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.05);
+  }
+  50% {
+    transform: scale(0.98);
+  }
+  75% {
+    transform: scale(1.06);
+  }
+}
+
+@keyframes orb-ring {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+
+@keyframes orb-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes orb-hue {
+  to {
+    filter: hue-rotate(360deg);
+  }
+}
+
+@keyframes blob-morph {
+  0%,
+  100% {
+    border-radius: 42% 58% 63% 37% / 41% 44% 56% 59%;
+  }
+  33% {
+    border-radius: 62% 38% 41% 59% / 58% 63% 37% 42%;
+  }
+  66% {
+    border-radius: 38% 62% 59% 41% / 63% 37% 58% 42%;
+  }
+}
+
+.orb-spin {
+  animation: orb-spin 6s linear infinite;
+}
+
+.orb-spin-slow {
+  animation: orb-spin-reverse 10s linear infinite;
+}
+
+.orb-spin-fast {
+  animation: orb-spin 3.5s linear infinite;
+}
+
+.orb-breathe {
+  animation: orb-breathe 3s ease-in-out infinite;
+}
+
+.orb-speak {
+  animation: orb-speak 0.9s ease-in-out infinite;
+}
+
+.orb-float {
+  animation: orb-float 4s ease-in-out infinite;
+}
+
+.orb-hue {
+  animation: orb-hue 12s linear infinite;
+}
+
+.orb-hue-fast {
+  animation: orb-hue 6s linear infinite;
+}
+
+.blob-morph {
+  animation: blob-morph 8s ease-in-out infinite;
+}
+
+.orb-ring {
+  animation: orb-ring 2s ease-out infinite;
+}
+
+.orb-ring-delayed {
+  animation: orb-ring 2s ease-out infinite;
+  animation-delay: 1s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orb-spin,
+  .orb-spin-slow,
+  .orb-spin-fast,
+  .orb-breathe,
+  .orb-speak,
+  .orb-float,
+  .orb-hue,
+  .orb-hue-fast,
+  .blob-morph,
+  .orb-ring,
+  .orb-ring-delayed {
+    animation: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* HUD (Iron Man style) utilities                                      */
+/* ------------------------------------------------------------------ */
+
+@keyframes hud-scan {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes hud-caret-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Angular, beveled panel corners — the core HUD silhouette. */
+.hud-bevel {
+  clip-path: polygon(
+    14px 0,
+    100% 0,
+    100% calc(100% - 14px),
+    calc(100% - 14px) 100%,
+    0 100%,
+    0 14px
+  );
+}
+
+.hud-bevel-sm {
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+}
+
+.hud-bevel-reverse {
+  clip-path: polygon(
+    0 0,
+    calc(100% - 14px) 0,
+    100% 14px,
+    100% 100%,
+    14px 100%,
+    0 calc(100% - 14px)
+  );
+}
+
+/* Cyan glow accents. */
+.hud-glow-text {
+  text-shadow:
+    0 0 6px rgba(34, 211, 238, 0.8),
+    0 0 16px rgba(34, 211, 238, 0.35);
+}
+
+.hud-glow-border {
+  box-shadow:
+    0 0 0 1px rgba(34, 211, 238, 0.35),
+    0 0 18px rgba(34, 211, 238, 0.12),
+    inset 0 0 24px rgba(34, 211, 238, 0.04);
+}
+
+/* Faint moving scan line inside a panel; parent needs position:relative + overflow:hidden. */
+.hud-scanline::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(34, 211, 238, 0.06) 45%,
+    rgba(34, 211, 238, 0.12) 50%,
+    rgba(34, 211, 238, 0.06) 55%,
+    transparent 100%
+  );
+  animation: hud-scan 5s linear infinite;
+  pointer-events: none;
+}
+
+/* Subtle static grid backdrop for the full page. */
+.hud-grid-bg {
+  background-image:
+    linear-gradient(rgba(34, 211, 238, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 211, 238, 0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.hud-caret {
+  animation: hud-caret-blink 1s step-end infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hud-scanline::after,
+  .hud-caret {
+    animation: none;
+  }
+}

@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Get current branch name
+branch=$(git symbolic-ref --short HEAD)
+
+# Prevent commits directly to main
+if [ "$branch" = "main" ]; then
+  echo "🚫 ERROR: Direct commits to 'main' branch are not allowed!"
+  echo "Please create a feature branch:"
+  echo "  git checkout -b feature/your-feature-name"
+  exit 1
+fi
+
+# Run Biome CI before commit
+echo "Running Biome CI checks..."
+pnpm biome ci
+
+if [ $? -ne 0 ]; then
+  echo "🚫 ERROR: Biome CI checks failed!"
+  echo "Fix the issues and try again."
+  exit 1
+fi
+
+echo "✅ Pre-commit checks passed!"
+exit 0

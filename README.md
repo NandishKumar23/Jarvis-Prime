@@ -1,6 +1,6 @@
 # Jarvis Prime 🤖
 
-Personal AI Orchestrator with Domain-Specific Agents powered by Groq AI.
+Personal AI Orchestrator with Domain-Specific Agents powered by Google ADK (Gemini).
 
 ## Features
 
@@ -25,7 +25,7 @@ Personal AI Orchestrator with Domain-Specific Agents powered by Groq AI.
   - Next.js 16 with App Router & Turbopack
   - TypeScript with strict mode
   - Tailwind CSS 4
-  - Groq SDK (llama-3.1-8b & llama-3.3-70b)
+  - Google ADK (`@google/adk`) with Gemini (`gemini-flash-latest`)
   - Type-safe environment variables (T3 Env)
   - Biome (linting & formatting)
 
@@ -47,12 +47,12 @@ Copy `.env.local` and fill in your credentials:
 cp .env.local .env.local
 \`\`\`
 
-#### Get Groq API Key (Required)
+#### Get Gemini API Key (Required)
 
-1. Go to [Groq Console](https://console.groq.com/keys)
-2. Sign up / Log in
-3. Create a new API key
-4. Copy and paste into `GROQ_API_KEY` in `.env.local`
+1. Go to [Google AI Studio](https://aistudio.google.com/app/apikey)
+2. Sign in with a Google account
+3. Create a new API key (free-tier Flash models are sufficient)
+4. Copy and paste into `GEMINI_API_KEY` in `.env.local`
 
 #### Setup GitHub OAuth (Required)
 
@@ -96,19 +96,21 @@ src/
 │   ├── layout.tsx                       # Root layout
 │   └── page.tsx                         # Landing page
 ├── lib/
-│   ├── agents/
-│   │   ├── base.ts                      # BaseAgent interface
-│   │   ├── knowledge.ts                 # Knowledge agent
-│   │   ├── finance.ts                   # Finance agent
-│   │   ├── fitness.ts                   # Fitness agent
-│   │   ├── health.ts                    # Health agent
-│   │   └── comms.ts                     # Comms agent
+│   ├── adk/
+│   │   ├── agents/
+│   │   │   ├── base.ts                  # createAdkAgent factory (ADK/Gemini)
+│   │   │   ├── knowledge.ts             # Knowledge agent (+ sports-news tool)
+│   │   │   ├── finance.ts               # Finance agent
+│   │   │   ├── fitness.ts               # Fitness agent
+│   │   │   ├── health.ts                # Health agent
+│   │   │   └── comms.ts                 # Comms agent
+│   │   └── tools/
+│   │       └── sportsNews.ts            # get_sports_news FunctionTool
 │   ├── orchestrator/
-│   │   ├── router.ts                    # Intent classification
-│   │   ├── dispatcher.ts                # Parallel execution
-│   │   └── merger.ts                    # Response combination
+│   │   ├── router.ts                    # Gemini intent classifier
+│   │   ├── dispatcher.ts                # Parallel agent streaming
+│   │   └── withPersona.ts              # JARVIS persona framing
 │   ├── env.ts                           # T3 Env configuration
-│   ├── groq-client.ts                   # Groq SDK client
 │   └── types.ts                         # TypeScript types
 ├── auth.ts                              # NextAuth configuration
 └── middleware.ts                        # Route protection
@@ -148,9 +150,9 @@ console.log(data.result); // Formatted response from agents
 
 ## Architecture
 
-1. **Router** (LLM-based): Analyzes user intent and selects relevant agents
-2. **Dispatcher**: Executes selected agents in parallel for faster responses
-3. **Merger**: Combines responses from multiple agents into coherent output
+1. **Router** (Gemini structured output): Analyzes user intent and selects relevant agents
+2. **Dispatcher**: Runs the selected ADK agents in parallel and multiplexes their token streams
+3. **Persona framing**: Wraps the streamed output in JARVIS-style greeting/intro/outro
 
 ## Roadmap
 

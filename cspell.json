@@ -26,7 +26,6 @@
     "Jarvis",
     "orchestrator",
     "llms",
-    "Groq",
     "pgvector",
     "arxiv",
     "Nandish",
@@ -58,7 +57,9 @@
     "mixin",
     "getters",
     "setters",
-    "destructuring"
+    "destructuring",
+    "outros",
+    "ceid"
   ],
   "ignoreWords": ["gsk", "NEXTAUTH", "POSTHOG", "vercel"],
   "ignorePaths": [
