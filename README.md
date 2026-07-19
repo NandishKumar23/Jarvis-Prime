@@ -1,0 +1,169 @@
+# Jarvis Prime 🤖
+
+Personal AI Orchestrator with Domain-Specific Agents powered by Google ADK (Gemini).
+
+## Features
+
+- 🧠 **5 Domain-Specific AI Agents**
+  - **Knowledge**: Tech news, research papers, learning resources
+  - **Finance**: Budget tracking, expense management, financial insights
+  - **Fitness**: Workout plans, nutrition advice, activity tracking
+  - **Health**: Wellness habits, mental health, focus techniques
+  - **Comms**: Email management, calendar scheduling, communication
+
+- 🔀 **Intelligent Orchestration**
+  - LLM-based intent classification
+  - Parallel agent execution
+  - Multi-agent response merging
+
+- 🔐 **GitHub Authentication**
+  - Secure OAuth login via NextAuth.js
+  - Protected chat routes
+  - User-specific sessions
+
+- ⚡ **Modern Tech Stack**
+  - Next.js 16 with App Router & Turbopack
+  - TypeScript with strict mode
+  - Tailwind CSS 4
+  - Google ADK (`@google/adk`) with Gemini (`gemini-flash-latest`)
+  - Type-safe environment variables (T3 Env)
+  - Biome (linting & formatting)
+
+## Setup
+
+### 1. Clone & Install
+
+\`\`\`bash
+git clone <your-repo-url>
+cd Jarvis-Prime
+pnpm install
+\`\`\`
+
+### 2. Configure Environment Variables
+
+Copy `.env.local` and fill in your credentials:
+
+\`\`\`bash
+cp .env.local .env.local
+\`\`\`
+
+#### Get Gemini API Key (Required)
+
+1. Go to [Google AI Studio](https://aistudio.google.com/app/apikey)
+2. Sign in with a Google account
+3. Create a new API key (free-tier Flash models are sufficient)
+4. Copy and paste into `GEMINI_API_KEY` in `.env.local`
+
+#### Setup GitHub OAuth (Required)
+
+1. Go to [GitHub Developer Settings](https://github.com/settings/developers)
+2. Click **New OAuth App**
+3. Fill in:
+   - **Application name**: Jarvis Prime
+   - **Homepage URL**: `http://localhost:3000`
+   - **Authorization callback URL**: `http://localhost:3000/api/auth/callback/github`
+4. Click **Register application**
+5. Copy the **Client ID** and paste into `GITHUB_ID` in `.env.local`
+6. Click **Generate a new client secret**, copy it, and paste into `GITHUB_SECRET`
+
+#### Generate NextAuth Secret
+
+Run this command to generate a random secret:
+
+\`\`\`bash
+openssl rand -base64 32
+\`\`\`
+
+Copy the output and paste into `NEXTAUTH_SECRET` in `.env.local`.
+
+### 3. Run Development Server
+
+\`\`\`bash
+pnpm dev
+\`\`\`
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Project Structure
+
+\`\`\`
+src/
+├── app/
+│   ├── api/
+│   │   ├── auth/[...nextauth]/route.ts  # NextAuth handlers
+│   │   └── chat/route.ts                # Main orchestrator endpoint
+│   ├── auth/signin/page.tsx             # Sign-in page
+│   ├── layout.tsx                       # Root layout
+│   └── page.tsx                         # Landing page
+├── lib/
+│   ├── adk/
+│   │   ├── agents/
+│   │   │   ├── base.ts                  # createAdkAgent factory (ADK/Gemini)
+│   │   │   ├── knowledge.ts             # Knowledge agent (+ sports-news tool)
+│   │   │   ├── finance.ts               # Finance agent
+│   │   │   ├── fitness.ts               # Fitness agent
+│   │   │   ├── health.ts                # Health agent
+│   │   │   └── comms.ts                 # Comms agent
+│   │   └── tools/
+│   │       └── sportsNews.ts            # get_sports_news FunctionTool
+│   ├── orchestrator/
+│   │   ├── router.ts                    # Gemini intent classifier
+│   │   ├── dispatcher.ts                # Parallel agent streaming
+│   │   └── withPersona.ts              # JARVIS persona framing
+│   ├── env.ts                           # T3 Env configuration
+│   └── types.ts                         # TypeScript types
+├── auth.ts                              # NextAuth configuration
+└── middleware.ts                        # Route protection
+\`\`\`
+
+## Available Scripts
+
+\`\`\`bash
+pnpm dev         # Start development server
+pnpm build       # Build for production
+pnpm start       # Start production server
+pnpm lint        # Run Biome linter
+pnpm format      # Format code with Biome
+pnpm type-check  # TypeScript type checking
+pnpm biome ci    # CI checks (lint + format)
+pnpm spell       # Spell check codebase
+\`\`\`
+
+## API Usage
+
+### POST /api/chat
+
+Send a message to the orchestrator:
+
+\`\`\`typescript
+const response = await fetch('/api/chat', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    message: "What are the latest AI papers?"
+  })
+});
+
+const data = await response.json();
+console.log(data.result); // Formatted response from agents
+\`\`\`
+
+## Architecture
+
+1. **Router** (Gemini structured output): Analyzes user intent and selects relevant agents
+2. **Dispatcher**: Runs the selected ADK agents in parallel and multiplexes their token streams
+3. **Persona framing**: Wraps the streamed output in JARVIS-style greeting/intro/outro
+
+## Roadmap
+
+- [ ] Chat UI with streaming responses
+- [ ] HackerNews API integration (Knowledge agent)
+- [ ] arXiv API integration (Knowledge agent)
+- [ ] Vector memory with pgvector
+- [ ] Gmail/Calendar MCP integration (Comms agent)
+- [ ] Personal finance tracking (Finance agent)
+- [ ] Workout logging (Fitness agent)
+
+## License
+
+MIT

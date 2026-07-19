@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Get current branch name
+branch=$(git symbolic-ref --short HEAD)
+
+# Prevent pushing directly to main
+if [ "$branch" = "main" ]; then
+  echo "🚫 ERROR: Direct pushes to 'main' branch are not allowed!"
+  echo ""
+  echo "Please push to a feature branch and create a Pull Request:"
+  echo "  1. Create feature branch: git checkout -b feature/your-feature"
+  echo "  2. Push to feature branch: git push origin feature/your-feature"
+  echo "  3. Create PR on GitHub"
+  echo ""
+  echo "To bypass (emergency only): git push --no-verify"
+  exit 1
+fi
+
+echo "✅ Pushing to feature branch '$branch'"
+exit 0
