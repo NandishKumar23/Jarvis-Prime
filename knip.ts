@@ -1,7 +1,7 @@
 import type { KnipConfig } from 'knip'
 
 const config: KnipConfig = {
-    exclude: []
+  exclude: [],
 }
 
 export default config
