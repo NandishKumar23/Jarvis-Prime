@@ -1,7 +1,7 @@
 import type { AgentSection, ChatMessage, UIMessage } from '@/lib/types'
 
 /** Default number of trailing messages kept when building agent context. */
-export const DEFAULT_HISTORY_WINDOW = 8
+const DEFAULT_HISTORY_WINDOW = 8
 
 /** Flattens an assistant message's per-agent sections into plain text for LLM context. */
 function flattenAssistantSections(sections: AgentSection[] | undefined): string {

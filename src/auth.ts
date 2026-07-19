@@ -3,7 +3,7 @@ import GitHub from 'next-auth/providers/github'
 import Google from 'next-auth/providers/google'
 import { env } from '@/lib/env'
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
+export const { handlers, auth } = NextAuth({
   providers: [
     GitHub({
       clientId: env.GITHUB_ID,
