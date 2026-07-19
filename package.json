@@ -18,7 +18,7 @@
     "lint": "biome lint --write .",
     "spell": "cspell \"**/*.{ts,tsx,js,jsx,md,json}\"",
     "spell:fix": "cspell \"**/*.{ts,tsx,js,jsx,md,json}\" --show-suggestions",
-    "type-check": "pnpm tsc --noEmit",
+    "type-check": "tsc --noEmit",
     "check:spelling": "cspell \"**/*.{md,txt,ts,tsx,js,jsx}\"",
     "validate": "pnpm type-check && pnpm check:ci && pnpm spell"
   },
